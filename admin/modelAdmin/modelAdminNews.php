@@ -1,6 +1,8 @@
 <?php
 class modelAdminNews {
 
+    // -----------NEWS -----------------
+
     public static function getNewsList() {
         $query = "SELECT news.*, category.name,users.username from news,
         category,users WHERE news.category_id=category.id AND
@@ -94,4 +96,8 @@ class modelAdminNews {
         return $test;
         }
     }
+
+    // ------------------- JOBS -----------------
+
+    
 }// class

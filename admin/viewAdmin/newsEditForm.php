@@ -65,6 +65,12 @@
                         </td>
                      </tr>
                     <!-- end image -->
+                    <!-- video -->
+                    <tr>
+                        <td>Video</td>
+                        <td>
+                            <textarea rows="3" name="video" class="form-control"><?php echo htmlspecialchars($detail['video']); ?></textarea>
+                        </td>
                     <tr>
                         <td colspan="2">
                             <button type="submit" class="btn btn-primary" name="save">

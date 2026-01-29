@@ -41,6 +41,27 @@ elseif ($path == 'newsDel' && isset($_GET['id'])) {
 elseif ($path == 'newsDelResult' && isset($_GET['id'])) {
     $response = controllerAdminNews::newsDeleteResult($_GET['id']);
 }
+//-------------add jobs
+elseif ($path == 'jobsAdd') {
+    $response = controllerAdminNews::jobsAdd();
+}
+elseif ($path == 'jobsAddResult') {
+    $response = controllerAdminNews::jobsAddResult();
+}
+//-----------edit jobs
+elseif ($path == 'jobEdit' && isset($_GET['id'])) {
+    $response = controllerAdminNews::jobEdit($_GET['id']);
+}
+elseif ($path == 'jobEditResult' && isset($_GET['id'])) {
+    $response = controllerAdminNews::jobEditResult($_GET['id']);
+}
+//-----------delete jobs
+elseif ($path == 'jobDel' && isset($_GET['id'])) {
+    $response = controllerAdminNews::jobDelete($_GET['id']);
+}
+elseif ($path == 'jobDelResult' && isset($_GET['id'])) {
+    $response = controllerAdminNews::jobDeleteResult($_GET['id']);
+}
 else {
     // Страница не существует
     $response = controllerAdmin::error404();

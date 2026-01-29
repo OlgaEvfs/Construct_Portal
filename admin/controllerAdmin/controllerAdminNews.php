@@ -36,5 +36,6 @@ class controllerAdminNews {
         $test = modelAdminNews::getNewsDelete($id);
         include_once('viewAdmin/newsDeleteForm.php');
     }
+    
 }// class
 ?>
