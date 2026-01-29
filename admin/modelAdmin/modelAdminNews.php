@@ -98,6 +98,84 @@ class modelAdminNews {
     }
 
     // ------------------- JOBS -----------------
+    public static function getJobCategories() {
+        $db = new Database();
+        // выбираем все категории вакансий
+        $sql = "SELECT * FROM job_category ORDER BY title";
+        return $db->getAll($sql);
+    }
 
-    
+    public static function getJobsAdd() {
+        $test = false;
+        if (isset($_POST['save'])) {
+            if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['job_category_id'])) {
+
+                $title = $_POST['title'];
+                $description = $_POST['description'];
+                $city = $_POST['city'];
+                $employment = $_POST['employment'];
+                $schedule = $_POST['schedule'];
+                $salary = $_POST['salary'];
+                $contact_name = $_POST['contact_name'];
+                $phone = $_POST['phone'];
+                $posted_date = $_POST['posted_date'];
+                $expires_date = $_POST['expires_date'];
+                $job_category_id = $_POST['job_category_id'];
+
+                $sql = "INSERT INTO `jobs` (`id`, `title`, `description`, `city`, `employment`, `schedule`, `salary`, `contact_name`, `phone`, `posted_date`, `expires_date`, `job_category_id`) VALUES (NULL, '$title', '$description', '$city', '$employment', '$schedule', '$salary', '$contact_name', '$phone', '$posted_date', '$expires_date', '$job_category_id')";
+                $db = new Database();
+                $item = $db->executeRun($sql);
+                if ($item == true) {
+                    $test = true;
+                }
+            }
+        }
+        return $test;
+    }
+    //----------job detail id
+    public static function getJobDetail($id) {
+        $query = "SELECT jobs.*, job_categories.title as category_title from jobs, job_categories WHERE jobs.job_category_id=job_categories.id and jobs.id=".$id;
+        $db = new Database();
+        $arr = $db->getOne($query);
+        return $arr;
+    }
+    //----------job edit
+    public static function getJobEdit($id) {
+        $test = false;
+        if (isset($_POST['save'])) {
+            if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['job_category_id'])) {
+                $title = $_POST['title'];
+                $description = $_POST['description'];
+                $city = $_POST['city'];
+                $employment = $_POST['employment'];
+                $schedule = $_POST['schedule'];
+                $salary = $_POST['salary'];
+                $contact_name = $_POST['contact_name'];
+                $phone = $_POST['phone'];
+                $posted_date = $_POST['posted_date'];
+                $expires_date = $_POST['expires_date'];
+                $job_category_id = $_POST['job_category_id'];
+                $sql = "UPDATE `jobs` SET `title` = '$title', `description` = '$description', `city` = '$city', `employment` = '$employment', `schedule` = '$schedule', `salary` = '$salary', `contact_name` = '$contact_name', `phone` = '$phone', `posted_date` = '$posted_date', `expires_date` = '$expires_date', `job_category_id` = '$job_category_id' WHERE `jobs`.`id` = ".$id;
+                        $db = new Database();
+                        $item = $db->executeRun($sql);
+                    if ($item == true) {
+                        $test = true;
+                    }
+            }
+        }
+        return $test;
+    }
+    //-----------job delete
+    public static function getJobDelete($id) {
+        $test = false;
+        if (isset($_POST['save'])) {
+            $sql = "DELETE FROM `jobs` WHERE `jobs`.`id` = ".$id;
+            $db = new Database();
+            $item = $db->executeRun($sql);
+            if ($item == true) {
+                $test = true;
+            }
+        return $test;
+        }
+    }
 }// class
