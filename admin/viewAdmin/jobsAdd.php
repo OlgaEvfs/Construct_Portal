@@ -6,9 +6,9 @@ $arr = modelAdminNews::getJobCategories();
 ?>
 
 <div class="container" style="min-height: 400px;">
-    <div class="col-ms-11">
+    <div class="col-md-11">
 
-        <h2>Добавить вакансию</h2>
+        <h2>Add Job</h2>
 
         <?php
         if (isset($test)) {

@@ -1,14 +1,36 @@
 /* =============================================================================== */
 body {
   margin:0;
-  font-family: Arial; 
+  font-family: 'Roboto', sans-serif; /* Changed to Roboto */
+  line-height: 1.6;
+  color: #333; /* Darker text for readability */
+  background-color: #f8f9fa; /* Light background */
   }
-h2 {
-  font-family: monospace;
-  color: #606060;
-  
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  color: #2c3e50; /* Primary blue color */
+  width: auto;
+  display: inline-block;
 }
-
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 1.8em;
+  color: #34495e; /* Darker Gray/Blue */
+  margin-bottom: 0.5em;
+}
+p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  margin-bottom: 1em;
+  color: #555;
+  word-wrap: break-word;
+  display: flex; /* Keeping original display property */
+}
 /* HEADER =================================================================== */
 
 /* NAVMENU =================================================== */
@@ -18,17 +40,20 @@ nav {
   padding: auto;
 }
 ul {
-  list-style: none; 
+  list-style: none;
   margin: 0;
   padding: 0;
+  display: flex; /* Make ul a flex container */
+  justify-content: space-between; /* Distribute items evenly */
+  align-items: center; /* Vertically align items */
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 .topmenu > li {
-  display: inline-block;
-  margin-right: auto;
   position: relative;
-  width: 10%;
-  padding: auto;
+  width: auto;
   text-align: center;
+  margin-right: 0; /* Remove fixed margin, flexbox handles spacing */
+  padding: 0;
 }
 .topmenu > li:last-child {
   margin-right: 0;
@@ -37,11 +62,15 @@ ul {
 .divBox{
   width: 85%;
   margin-left: 20px;
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Internal spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .pull-right{
   padding:20px;
   float: right;
+  margin-left: auto; /* Push to the right */
 }
 
 /*img {
@@ -50,7 +79,7 @@ ul {
 
 a {
   display: block;
-  padding: 10px 15px;
+  padding: 15px 15px; /* Increased vertical padding */
   text-decoration: none;
   outline: none;
  
@@ -72,7 +101,8 @@ a {
   text-align: center;
 }
 .one ul {
-  background: #AB0000;
+  background: #2c3e50; /* Dark Blue/Navy */
+  border-radius: 8px; /* Rounded corners for the navigation bar */
 }
 .one ul a {
   color: white;
@@ -81,13 +111,14 @@ a {
 }
 
 .one ul a:hover {
-  color: gold;
+  color: #f39c12; /* Orange/Yellow accent */
   transition: 0.3s;
   text-decoration: underline;
 }
 .one .submenu {
   display: none;
-  background: #c40202;
+  background: #34495e; /* Slightly darker blue */
+  border-radius: 0 0 8px 8px; /* Rounded corners only at the bottom */
 }
 .one ul li:hover .submenu {
   display: block;
@@ -124,8 +155,8 @@ section{
 .searchbar{
     height: 25px;
     margin-bottom: 3px;
-    width: 300px;
-    border-radius: 4px;
+    width: 300px; /* Original width */
+    border-radius: 5px; /* Increased to 5px */
     padding: 2px;
     border: 0;
 }
@@ -151,15 +182,15 @@ tr{
 }
 
 th{
-    background-color: #4EBE4C;
+    background-color: #2c3e50; /* Dark Blue/Navy */
     padding: 20px;
     margin: 0;
     border: 1px solid black;
 }
 
 .btn{
-   background-color: #43E16F;
-   border-radius: 3px;
+   background-color: #e67e22; /* Orange accent */
+   border-radius: 5px; /* Increased to 5px */
    margin-left: 10px;
    height: 30px;
    border: 0;
@@ -184,7 +215,7 @@ h1{
 }
 
 .courselink:hover{
-    color: blue;
+    color: #f39c12; /* Orange/Yellow accent */
     text-decoration: underline;
 }
 

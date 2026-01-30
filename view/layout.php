@@ -7,6 +7,7 @@
                 crossorigin="anonymous">
                 <link rel="stylesheet" type="text/css" href="style.css">
         <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet"> <!-- Added Roboto font -->
         <meta charset="utf-8">
 
     </head>
@@ -49,6 +50,10 @@
 
         <hr>
         <p style="display:block; text-align:center;">JKTV24 2026 a. &copy</p>
+
+        <script src="public/js/jquery-3.1.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="public/js/bootstrap.min.js"></script>
     </body>
     
 </html>

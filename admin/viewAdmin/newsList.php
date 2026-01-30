@@ -6,9 +6,7 @@
     <div style="margin: 20px;">
         <a class="btn btn-primary" href="newsAdd" role="button">Добавить новость</a>
     </div>
-    <div style="margin: 20px;">
-        <a class="btn btn-primary" href="jobsAdd" role="button">Добавить вакансию</a>
-    </div>
+
     <div class="col-md-11">
         <table class="table table-bordered table-responsive">
             <tr>
@@ -39,7 +37,11 @@
         </table>
 
         <h2>Вакансии</h2>
+        <div style="margin: 20px;">
+            <a class="btn btn-primary" href="jobsAdd" role="button">Добавить вакансию</a>
+        </div>
 
+        <div class="table-responsive">
         <table class="table table-bordered">
         <tr>
             <th>ID</th>
@@ -64,6 +66,7 @@
         </tr>
         <?php endforeach; ?>
         </table>
+        </div>
 
     </div>
 </div>

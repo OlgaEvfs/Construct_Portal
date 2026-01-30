@@ -1,16 +1,24 @@
 ﻿body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
+  background-color: #f4f6f9; /* Admin general background */
+  font-family: 'Roboto', sans-serif; /* Consistent font */
+  color: #343a40;
 }
 
 .form-signin {
   max-width: 330px;
-  padding: 15px;
+  padding: 25px; /* Increased padding */
   margin: 0 auto;
+  background-color: #ffffff; /* White background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 .form-signin .form-signin-heading {
-  margin-bottom: 10px;
+  margin-bottom: 20px; /* More spacing */
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #343a40;
 }
 .form-signin .form-control {
   position: relative;
@@ -19,10 +27,15 @@
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   padding: 10px;
-  font-size: 16px;
+  font-size: 16px; /* Reverted font size */
+  font-family: 'Roboto', sans-serif; /* Consistent font */
+  border-radius: 4px; /* Rounded input corners */
+  border: 1px solid #ced4da; /* Consistent border */
 }
 .form-signin .form-control:focus {
   z-index: 2;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 .form-signin input[type="text"] {
   margin-bottom: -1px;

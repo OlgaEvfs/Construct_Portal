@@ -7,7 +7,7 @@ $arr = modelAdminNews::getJobCategories(); // список категорий
 
 <div class="container" style="min-height: 400px;">
     <div class="col-md-11">
-        <h2>Удалить вакансию</h2>
+        <h2>Delete Job</h2>
         <?php
         if (isset($test)) {
             if ($test == true) {

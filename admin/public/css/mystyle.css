@@ -1,39 +1,178 @@
- #content{
-                margin:0 auto;
-                width:900px;
-				/*min-height:500px;
-				height: 100%;*/
-				 
-            }
-			img {
-				float: left;
-				width: 100px;
-				height:100px;
-				padding-right: 10px;
-			}
-            article{
-                /*background: #e1ffe1;*/
-                border: 1px solid #4caf50;
-                border-radius: 5px;
-                padding: 10px 20px;
-                margin: 20px;
-                color: #313331;
-				
-				min-height:230px;
-				width:700px;
-			
-            }
-            article h3{
-                color: #4e4e4e;
-            }
-            article h3 a{
-                color: #4e4e4e;
-            }			
-            article p{
-			font-size:16px;
-            }
+/* General Admin Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #343a40; /* Dark gray for readability */
+  background-color: #f4f6f9; /* Light gray background */
+  margin: 0;
+  padding: 0;
+  font-size: 1.6rem; /* Increased base font size for the admin panel */
+}
 
-            ul{
-                list-style:none;
-            }
-           
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 3rem; color: #007bff; /* Accent blue */ }
+h3 { font-size: 2.5rem; font-weight: 500; }
+h4 { font-size: 2rem; font-weight: 400; }
+
+/* Paragraphs */
+p {
+  font-size: 1.6rem; /* Increased font size for readability */
+  margin-bottom: 1rem;
+  margin-top: 20px; /* Added top margin for spacing */
+}
+
+/* Links */
+a {
+  color: #007bff; /* Bootstrap primary blue */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Main Content Area */
+#content {
+  margin: 20px auto; /* More consistent margin */
+  width: 100%; /* Set to 100% to match parent container width */
+  /* max-width removed as it's constrained by parent .container */
+  padding: 40px; /* Increased padding */
+  background-color: #ffffff; /* White background for content */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-sizing: border-box; /* Include padding in width */
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #343a40;
+  border-collapse: collapse;
+  border-radius: 5px; /* Rounded corners for tables */
+  overflow: hidden; /* Ensures rounded corners are visible */
+}
+table th,
+table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border: 1px solid #dee2e6;
+}
+table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #007bff; /* Accent blue background */
+  color: #ffffff; /* White text for contrast */
+}
+table tbody tr:hover {
+  color: #343a40;
+  background-color: rgba(0, 0, 0, 0.075); /* Subtle hover effect */
+}
+
+/* Images within articles */
+article img {
+  float: left;
+  width: 80px; /* Slightly smaller */
+  height: 80px; /* Slightly smaller */
+  padding-right: 15px; /* Increased padding */
+  object-fit: cover; /* Ensure images cover their area */
+  border-radius: 4px; /* Rounded image corners */
+}
+
+/* Lists */
+ul {
+  list-style: none; /* Keep original */
+  padding: 0;
+  margin: 0;
+}
+/* Specific list for admin nav, if any */
+.nav.nav-pills {
+    margin-bottom: 1rem;
+}
+.nav.nav-pills li a {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.nav.nav-pills li.active a {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+/* Footer */
+footer.footer p {
+    text-align: center;
+    padding: 20px 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Navbar (from layout.php snippet) */
+nav.navbar {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.25rem;
+    background-color: #ffffff; /* White background for navbar */
+    padding: 0.75rem 1.5rem; /* Increased padding */
+}
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar h4 {
+    margin: 0;
+    font-size: 1.8rem; /* Even further increased font size for readability */
+}
+.navbar h4 a {
+    color: #0056b3; /* Darkened blue for better readability */
+    padding: 0.8rem 1.1rem; /* Adjusted padding */
+}
+.navbar h4 a:hover {
+    color: #0056b3;
+}
+.navbar ul.nav.nav-pills {
+    margin: 0;
+}
+.navbar ul.nav.nav-pills li {
+    list-style: none;
+    display: inline-block;
+}
+.navbar ul.nav.nav-pills li a {
+    display: inline-block;
+    padding: 1.0rem 1.8rem; /* Adjusted padding */
+    border-radius: 0.25rem;
+    color: #343a40; /* Darkened color for better readability */
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+    font-size: 1.8rem; /* Even further increased font size for readability */
+}
+.navbar ul.nav.nav-pills li a:hover {
+    color: #343a40;
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+/* Fix for overflowing tables within col-md-11 */
+.col-md-11 {
+    overflow-x: auto;
+}
+
+/* Ensure content within table cells wraps and images fit */
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+table td img {
+    max-width: 100%;
+    height: auto;
+}
