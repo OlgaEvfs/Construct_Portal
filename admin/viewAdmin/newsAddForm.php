@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 
 <div class="container" style="min-height: 400px;">
-    <div class="col-ms-11">
+    <div class="col-md-11">
 
         <h2>News Add</h2>
         <?php
