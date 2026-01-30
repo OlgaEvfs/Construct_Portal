@@ -1,7 +1,7 @@
 <?php
 ob_start();
 ?>
-<h1>Вакансии категории</h1>
+<h1>Vabade töökohtade kategooriad</h1>
 
 <?php if(empty($jobs)): ?>
     <p>Нет вакансий в этой категории.</p>

@@ -1,7 +1,7 @@
 <?php
 ob_start();
 ?>
-<h1>Категории вакансий</h1>
+<h1>Vabade töökohtade kategooriad</h1>
 <ul>
 <?php foreach($arr as $cat): ?>
     <li>

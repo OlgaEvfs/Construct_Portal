@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Регистрация пользователя</title>
+        <title>Kasutaja registreerimine</title>
         <link href="public/css/bootstrap.min.css" rel="stylesheet">
         <link href="public/css/login.css" rel="stylesheet">
     </head>

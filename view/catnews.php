@@ -1,7 +1,7 @@
 <?php
 ob_start();
 ?>
-<h1>Новости (категории)</h1>
+<h1>Uudised kategoorias</h1>
 <br>
 
 <?php
