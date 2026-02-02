@@ -1,140 +1,222 @@
 <?php
 class modelAdminNews {
 
+    private static $db = null;
+
+    public static function setDatabase(Database $db) {
+        self::$db = $db;
+    }
+
+    private static function getDb() {
+        // If a DB connection has been injected, use it. Otherwise, create a new one.
+        return self::$db ?: new Database();
+    }
+
+    public static function validateNewsData(array $data) {
+        if (empty($data['title']) || empty($data['text'])) {
+            return false;
+        }
+
+        return [
+            'title' => trim($data['title']),
+            'text' => trim($data['text']),
+            'idCategory' => $data['idCategory'] ?? null,
+            'video' => $data['video'] ?? null,
+        ];
+    }
+
+    public static function validateJobData(array $data) {
+        // Required fields
+        if (empty($data['title']) || empty($data['description']) || empty($data['job_category_id'])) {
+            return false;
+        }
+
+        return [
+            'title' => trim($data['title']),
+            'description' => trim($data['description']),
+            'city' => trim($data['city'] ?? ''),
+            'employment' => trim($data['employment'] ?? ''),
+            'schedule' => trim($data['schedule'] ?? ''),
+            'salary' => trim($data['salary'] ?? ''),
+            'contact_name' => trim($data['contact_name'] ?? ''),
+            'phone' => trim($data['phone'] ?? ''),
+            'posted_date' => $data['posted_date'] ?? null,
+            'expires_date' => $data['expires_date'] ?? null,
+            'job_category_id' => $data['job_category_id'],
+        ];
+    }
+
     // -----------NEWS -----------------
 
     public static function getNewsList() {
         $query = "SELECT news.*, category.name,users.username from news,
         category,users WHERE news.category_id=category.id AND
         news.user_id=users.id ORDER BY `news`.`id` DESC";
-        $db = new Database();
+        $db = self::getDb();
         $arr = $db->getAll($query);
         return $arr;
     }
-    //------Add
+    
+    // Testable method for adding news
+    public static function addNews(array $data) {
+        $sql = "INSERT INTO `news` (`title`, `text`, `picture`, `video`, `category_id`, `user_id`) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        $db = self::getDb();
+        $stmt = $db->connect()->prepare($sql);
+
+        // Bind parameters
+        $stmt->bindValue(1, $data['title']);
+        $stmt->bindValue(2, $data['text']);
+        $stmt->bindValue(3, $data['image'] ?? null, PDO::PARAM_LOB);
+        $stmt->bindValue(4, $data['video'] ?? null);
+        $stmt->bindValue(5, $data['idCategory']);
+        $stmt->bindValue(6, $data['user_id'] ?? 1); // Default user_id to 1 if not provided
+
+        return $stmt->execute();
+    }
+
+    //------Add (original method, now refactored)
     public static function getNewsAdd() {
-        $test = false;
-        if (isset($_POST['save'])) {
-            if (isset($_POST['title']) && isset($_POST['text']) && isset($_POST['idCategory']) && isset($_POST['video'])) {
-
-                $title = $_POST['title'];
-                $text = $_POST['text'];
-                $idCategory = $_POST['idCategory'];
-
-                //-------------images type blob
-                    $image = null; // по умолчанию, если картинки нет
-
-                        if (!empty($_FILES['picture']['tmp_name'])) {
-                            $image = addslashes(file_get_contents($_FILES['picture']['tmp_name']));
-                        }
-
-                //------------videos type text
-                    $video = addslashes($_POST['video']);
-                
-                //----------------
-                $sql = "INSERT INTO `news` (`id`, `title`, `text`, `picture`, `video`, `category_id`, `user_id`) VALUES (NULL, '$title', '$text', '$image', '$video', '$idCategory', '1')";
-                $db = new Database();
-                $item = $db->executeRun($sql);
-                if ($item == true) {
-                    $test = true;
-                }
-            }
+        if (!isset($_POST['save'])) {
+            return false;
         }
-        return $test;
+
+        $validatedData = self::validateNewsData($_POST);
+        if ($validatedData === false) {
+            return false;
+        }
+        
+        $imageContent = null;
+        if (!empty($_FILES['picture']['tmp_name'])) {
+            // It's better to handle file uploads in a controller, but for now, we keep it here.
+            $imageContent = file_get_contents($_FILES['picture']['tmp_name']);
+        }
+
+        $dataToInsert = [
+            'title' => $validatedData['title'],
+            'text' => $validatedData['text'],
+            'idCategory' => $validatedData['idCategory'],
+            'video' => $validatedData['video'],
+            'image' => $imageContent,
+            'user_id' => 1 // Assuming a default user_id
+        ];
+
+        return self::addNews($dataToInsert);
     }
     //----------news detail id
     public static function getNewsDetail($id) {
         $query = "SELECT news.*, category.name,users.username from news, category,users WHERE news.category_id=category_id AND news.user_id=users.id and news.id=".$id;
-        $db = new Database();
+        $db = self::getDb();
         $arr = $db->getOne($query);
         return $arr;
     }
-    //----------news edit
-    public static function getNewsEdit($id) {
-        $test = false;
-        if (isset($_POST['save'])) {
-            if (isset($_POST['title']) && isset($_POST['text']) && isset($_POST['idCategory'])) {
-                $title = $_POST['title'];
-                $text = $_POST['text'];
-                $idCategory = $_POST['idCategory'];
-                //-------------images type blob
-                $image = $_FILES['picture']['name'];
-                if ($image != "") {
-                    $image = addslashes(file_get_contents($_FILES['picture']['tmp_name']));
-                /*  //------------images type text
-                    $uploaddir = '../images/';
-                    $uploadfile = $uploaddir . basename($_FILES['picture']['name']);
-                    copy($_FILES['picture']['tmp_name'], $uploadfile); */
-                }
-                //-------------------------
-                if ($image == "") {
-                    $sql = "UPDATE `news` SET `title` = '$title', `text` = '$text', `category_id` = '$idCategory' WHERE `news`.`id` = ".$id;
-                }
-                else {
-                    $sql = "UPDATE `news` SET `title` = '$title', `text` = '$text', `picture` = '$image', `category_id` = '$idCategory' WHERE `news`.`id` = ".$id;
-                }
-                        $db = new Database();
-                        $item = $db->executeRun($sql);
-                    if ($item == true) {
-                        $test = true;
-                    }
-                
-            }
+
+    // Testable method for editing news
+    public static function editNews($id, array $data) {
+        $db = self::getDb();
+        
+        $sql = "UPDATE `news` SET `title` = ?, `text` = ?, `category_id` = ?";
+        $params = [$data['title'], $data['text'], $data['idCategory']];
+
+        if (array_key_exists('image', $data)) {
+            $sql .= ", `picture` = ?";
+            $params[] = $data['image'];
         }
-        return $test;
+
+        $sql .= " WHERE `id` = ?";
+        $params[] = $id;
+        
+        $stmt = $db->connect()->prepare($sql);
+        return $stmt->execute($params);
     }
-    //-----------news delete
-    public static function getNewsDelete($id) {
-        $test = false;
-        if (isset($_POST['save'])) {
-            $sql = "DELETE FROM `news` WHERE `news`.`id` = ".$id;
-            $db = new Database();
-            $item = $db->executeRun($sql);
-            if ($item == true) {
-                $test = true;
-            }
-        return $test;
+    
+    //----------news edit (original method, now refactored)
+    public static function getNewsEdit($id) {
+        if (!isset($_POST['save'])) {
+            return false;
         }
+
+        $validatedData = self::validateNewsData($_POST);
+        if ($validatedData === false) {
+            return false;
+        }
+
+        $dataToUpdate = [
+            'title' => $validatedData['title'],
+            'text' => $validatedData['text'],
+            'idCategory' => $validatedData['idCategory'],
+        ];
+
+        if (!empty($_FILES['picture']['tmp_name'])) {
+            $dataToUpdate['image'] = file_get_contents($_FILES['picture']['tmp_name']);
+        }
+
+        return self::editNews($id, $dataToUpdate);
+    }
+
+    // Testable method for deleting news
+    public static function deleteNews($id) {
+        $sql = "DELETE FROM `news` WHERE `id` = ?";
+        $db = self::getDb();
+        $stmt = $db->connect()->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    //-----------news delete (original method, now refactored)
+    public static function getNewsDelete($id) {
+        if (isset($_POST['save'])) {
+            return self::deleteNews($id);
+        }
+        return false;
     }
 
     // ------------------- JOBS -----------------
     public static function getJobCategories() {
-        $db = new Database();
+        $db = self::getDb();
         // выбираем все категории вакансий
         $sql = "SELECT * FROM job_category ORDER BY title";
         return $db->getAll($sql);
     }
+    
+    // Testable method for adding a job
+    public static function addJob(array $data) {
+        $sql = "INSERT INTO `jobs` (`title`, `description`, `city`, `employment`, `schedule`, `salary`, `contact_name`, `phone`, `posted_date`, `expires_date`, `job_category_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $db = self::getDb();
+        $stmt = $db->connect()->prepare($sql);
+
+        $params = [
+            $data['title'],
+            $data['description'],
+            $data['city'] ?? null,
+            $data['employment'] ?? 'Полная занятость',
+            $data['schedule'] ?? 'Стандартный график',
+            $data['salary'] ?? null,
+            $data['contact_name'] ?? null,
+            $data['phone'] ?? null,
+            $data['posted_date'] ?? date('Y-m-d H:i:s'),
+            $data['expires_date'] ?? null,
+            $data['job_category_id'],
+        ];
+
+        return $stmt->execute($params);
+    }
 
     public static function getJobsAdd() {
-        $test = false;
-        if (isset($_POST['save'])) {
-            if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['job_category_id'])) {
-
-                $title = $_POST['title'];
-                $description = $_POST['description'];
-                $city = $_POST['city'];
-                $employment = $_POST['employment'];
-                $schedule = $_POST['schedule'];
-                $salary = $_POST['salary'];
-                $contact_name = $_POST['contact_name'];
-                $phone = $_POST['phone'];
-                $posted_date = $_POST['posted_date'];
-                $expires_date = $_POST['expires_date'];
-                $job_category_id = $_POST['job_category_id'];
-
-                $sql = "INSERT INTO `jobs` (`id`, `title`, `description`, `city`, `employment`, `schedule`, `salary`, `contact_name`, `phone`, `posted_date`, `expires_date`, `job_category_id`) VALUES (NULL, '$title', '$description', '$city', '$employment', '$schedule', '$salary', '$contact_name', '$phone', '$posted_date', '$expires_date', '$job_category_id')";
-                $db = new Database();
-                $item = $db->executeRun($sql);
-                if ($item == true) {
-                    $test = true;
-                }
-            }
+        if (!isset($_POST['save'])) {
+            return false;
         }
-        return $test;
+
+        $validatedData = self::validateJobData($_POST);
+        if ($validatedData === false) {
+            return false;
+        }
+
+        return self::addJob($validatedData);
     }
     //----------job detail id
     public static function getJobDetail($id) {
-        $db = new Database();
+        $db = self::getDb();
 
         $query = "SELECT jobs.*, job_category.title AS category_title
                 FROM jobs
@@ -144,54 +226,59 @@ class modelAdminNews {
         $arr = $db->getOne($query);
         return $arr;
     }
-    //----------job edit
-    public static function getJobEdit($id) {
-        $test = false;
-        if (isset($_POST['save'])) {
-            $title = $_POST['title'];
-            $description = $_POST['description'];
-            $city = $_POST['city'];
-            $employment = $_POST['employment'];
-            $schedule = $_POST['schedule'];
-            $salary = $_POST['salary'];
-            $contact_name = $_POST['contact_name'];
-            $phone = $_POST['phone'];
-            $posted_date = $_POST['posted_date'];
-            $expires_date = $_POST['expires_date'];
-            $job_category_id = $_POST['job_category_id'];
 
-            $sql = "UPDATE jobs SET
-                title='$title',
-                description='$description',
-                city='$city',
-                employment='$employment',
-                schedule='$schedule',
-                salary='$salary',
-                contact_name='$contact_name',
-                phone='$phone',
-                posted_date='$posted_date',
-                expires_date='$expires_date',
-                job_category_id='$job_category_id'
-                WHERE id=".$id;
+    // Testable method for editing a job
+    public static function editJob($id, array $data) {
+        $sql = "UPDATE jobs SET
+                title = :title,
+                description = :description,
+                city = :city,
+                employment = :employment,
+                schedule = :schedule,
+                salary = :salary,
+                contact_name = :contact_name,
+                phone = :phone,
+                posted_date = :posted_date,
+                expires_date = :expires_date,
+                job_category_id = :job_category_id
+                WHERE id = :id";
+        
+        $db = self::getDb();
+        $stmt = $db->connect()->prepare($sql);
 
-            $db = new Database();
-            if ($db->executeRun($sql)) {
-                $test = true;
-            }
-        }
-        return $test;
+        $data['id'] = $id;
+
+        return $stmt->execute($data);
     }
-    //-----------job delete
-    public static function getJobDelete($id) {
-        $test = false;
-        if (isset($_POST['save'])) {
-            $sql = "DELETE FROM `jobs` WHERE `jobs`.`id` = ".$id;
-            $db = new Database();
-            $item = $db->executeRun($sql);
-            if ($item == true) {
-                $test = true;
-            }
-        return $test;
+
+    //----------job edit (original method, now refactored)
+    public static function getJobEdit($id) {
+        if (!isset($_POST['save'])) {
+            return false;
         }
+
+        $validatedData = self::validateJobData($_POST);
+        if ($validatedData === false) {
+            return false;
+        }
+
+        // The validation function returns all fields, so we can pass it directly
+        return self::editJob($id, $validatedData);
+    }
+    
+    // Testable method for deleting a job
+    public static function deleteJob($id) {
+        $sql = "DELETE FROM `jobs` WHERE `id` = ?";
+        $db = self::getDb();
+        $stmt = $db->connect()->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    //-----------job delete (original method, now refactored)
+    public static function getJobDelete($id) {
+        if (isset($_POST['save'])) {
+            return self::deleteJob($id);
+        }
+        return false;
     }
 }// class

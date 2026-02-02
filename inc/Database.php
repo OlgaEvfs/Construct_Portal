@@ -7,11 +7,11 @@ class database {
     private $password;
     private $baseName;
 
-    function __construct() {
-        $this->host = 'localhost';
-        $this->user = 'root';
-        $this->password = '';
-        $this->baseName = 'construct_portal';
+    function __construct($host = 'localhost', $user = 'root', $password = '', $baseName = 'construct_portal') {
+        $this->host = $host;
+        $this->user = $user;
+        $this->password = $password;
+        $this->baseName = $baseName;
         $this->connect();
     }
     function __destruct() {

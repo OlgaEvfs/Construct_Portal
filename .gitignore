@@ -1,1 +1,3 @@
 /public/video/
+/vendor/
+/.phpunit.result.cache
